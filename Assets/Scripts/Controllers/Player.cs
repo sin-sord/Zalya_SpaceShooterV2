@@ -63,11 +63,13 @@ public class Player : MonoBehaviour
             //transform.position -= moveY;
         }
 
+        // This is what allows for the players movement to look smooth using acceleratoin
         if (moveDirection.magnitude == 0)
         {
             velocity += -acceleration * Time.deltaTime * velocity.normalized;
         }
 
+        // This is what allows for the players movement to look smooth using deceleratoin
         velocity += acceleration * Time.deltaTime * moveDirection.normalized;
         transform.position += velocity * Time.deltaTime;
 
