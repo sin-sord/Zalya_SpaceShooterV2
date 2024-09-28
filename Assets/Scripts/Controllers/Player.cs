@@ -19,18 +19,23 @@ public class Player : MonoBehaviour
 
     private float acceleration;
     // git for prof: 100Vikings
-
+   float timeSpeed = 10f;
+   float movement;
 
     void Start()
     {
         acceleration = maxSpeed / accelerationTime;
+        movement = timeSpeed * Time.deltaTime;
     }
 
     void Update()
     {
-    //    transform.position += velocity * Time.deltaTime;
-               
-        PlayerMovement();
+        transform.position += velocity * Time.deltaTime;
+       PlayerMovement();
+      /*  if(Input.GetKey(KeyCode.W))
+        {
+            transform.position = Vector3.MoveTowards(transform.position, Vector3.zero, movement);
+        }*/
     }
 
     void PlayerMovement()
