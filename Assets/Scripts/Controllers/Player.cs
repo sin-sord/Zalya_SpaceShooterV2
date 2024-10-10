@@ -25,27 +25,21 @@ public class Player : MonoBehaviour
    float timeSpeed = 10f;
    float movement;
 
-
-    List<float> circlePosition = new List<float>();
-    int currentPoint = 0;
-    List<float> angles = new List<float>();
+    Color lineColor = Color.green;
+    public int circlePoints;
 
     void Start()
     {
         acceleration = maxSpeed / accelerationTime;
         movement = timeSpeed * Time.deltaTime;
 
-        for (int i = 0; i < 10; i++)
-        {
-            circlePosition.Add(Random.Range(0, 360));
-        }
     }
 
     void Update()
     {
         transform.position += velocity * Time.deltaTime;
         PlayerMovement();
-        EnemyRadar(1, 5);
+        EnemyRadar(1, circlePoints);
     }
 
     void PlayerMovement()
@@ -93,43 +87,32 @@ public class Player : MonoBehaviour
 
     public void EnemyRadar(float radius, int circlePoints)
     {
+        List<float> listOfPoints = new List<float>();
+        float setPoint = 360 / circlePoints;
 
-        float angleInt = 360 / circlePoints;
-
-        for (int i = 0; i < circlePoints; i++)
+        for(int index = 0; index <= circlePoints; index++)
         {
-            float distance = Vector3.Distance(transform.position, enemyTransform.position);
+            listOfPoints.Add(setPoint * index);
 
-             if (distance < radius)
-             {
-                angles.Add(angleInt * i);
-             }
+            for(int pointsCount = 1; pointsCount < listOfPoints.Count; pointsCount++)
+            {
+                Vector3 startLine = transform.position + new Vector3(Mathf.Cos(listOfPoints[pointsCount - 1] * Mathf.Deg2Rad * radius),Mathf.Sin(listOfPoints[pointsCount - 1] * Mathf.Deg2Rad * radius));
+
+                Vector3 endLine = transform.position + new Vector3(Mathf.Cos(listOfPoints[pointsCount] * Mathf.Deg2Rad * radius), Mathf.Sin(listOfPoints[pointsCount] * Mathf.Deg2Rad * radius));
+
+                Debug.DrawLine(startLine, endLine, lineColor);
+            }
+
         }
 
-        for (int index = 1; index < angles.Count; index++)
+        if(Vector3.Distance(transform.position, enemyTransform.position) <= radius)
         {
-            Vector3 A = transform.position * radius;
+            lineColor = Color.red;
         }
-        
-
-
-        /*for (int i = 0; i < circlePoints; i++)
+        else
         {
-            circlePosition.Add(circlePoints);
-            
-            float angleInRadians = circlePosition[currentPoint] * Mathf.Deg2Rad;
-            
-            float x = Mathf.Cos(angleInRadians);
-            float y = Mathf.Sin(angleInRadians);
-
-
-            Vector3 playerCircle = new Vector3(transform.position.x * x, transform.position.y * y);
-            Vector3 resultant = new Vector3(x, y, 0) * radius;
-            Debug.DrawLine(new Vector3(transform.position.x + x, transform.position.y, 0), new Vector3(transform.position.x, transform.position.y + y, 0), Color.green);
-        }*/
-
-
-
+            lineColor = Color.green;
+        }
     }
 
 }

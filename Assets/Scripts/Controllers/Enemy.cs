@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        detector(4.5f, 7);
+  //      detector(4.5f, 7);
     }
 
     void detector(float inRangeOfEnemy, float nearEnemy)
