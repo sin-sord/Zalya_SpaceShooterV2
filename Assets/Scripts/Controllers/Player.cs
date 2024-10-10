@@ -19,9 +19,12 @@ public class Player : MonoBehaviour
 
     private float acceleration;
     // git for prof: 100Vikings
+
    float timeSpeed = 10f;
    float movement;
 
+
+    
     void Start()
     {
         acceleration = maxSpeed / accelerationTime;
@@ -31,11 +34,9 @@ public class Player : MonoBehaviour
     void Update()
     {
         transform.position += velocity * Time.deltaTime;
-       PlayerMovement();
-      /*  if(Input.GetKey(KeyCode.W))
-        {
-            transform.position = Vector3.MoveTowards(transform.position, Vector3.zero, movement);
-        }*/
+        PlayerMovement();
+        EnemyRadar(2.5f, 4);
+
     }
 
     void PlayerMovement()
@@ -78,10 +79,25 @@ public class Player : MonoBehaviour
         velocity += acceleration * Time.deltaTime * moveDirection.normalized;
         transform.position += velocity * Time.deltaTime;
 
-/*      transform.position += moveX * Time.deltaTime;
-        transform.position -= moveX * Time.deltaTime;
-        transform.position += moveY * Time.deltaTime;
-        transform.position -= moveY * Time.deltaTime;*/
+    }
+
+    public void EnemyRadar(float radius, int circlePoints)
+    {
+        for (int i = 0; i < circlePoints; i++)
+        {
+            circlePoints++;
+
+            float x = Mathf.Cos(circlePoints) * radius;
+            float y = Mathf.Sin(circlePoints) * radius;
+
+
+
+            Vector3 circlePos = new Vector3(transform.position.x + x, transform.position.y + y);
+            Debug.DrawLine(transform.position, circlePos, Color.green);
+            
+        }
+        Debug.Log("drawing line");
+
     }
 
 }
