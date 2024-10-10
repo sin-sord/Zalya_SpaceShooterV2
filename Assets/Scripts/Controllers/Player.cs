@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Data;
+﻿using JetBrains.Annotations;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -24,19 +26,26 @@ public class Player : MonoBehaviour
    float movement;
 
 
-    
+    List<float> circlePosition = new List<float>();
+    int currentPoint = 0;
+    List<float> angles = new List<float>();
+
     void Start()
     {
         acceleration = maxSpeed / accelerationTime;
         movement = timeSpeed * Time.deltaTime;
+
+        for (int i = 0; i < 10; i++)
+        {
+            circlePosition.Add(Random.Range(0, 360));
+        }
     }
 
     void Update()
     {
         transform.position += velocity * Time.deltaTime;
         PlayerMovement();
-        EnemyRadar(2.5f, 4);
-
+        EnemyRadar(1, 5);
     }
 
     void PlayerMovement()
@@ -81,22 +90,45 @@ public class Player : MonoBehaviour
 
     }
 
+
     public void EnemyRadar(float radius, int circlePoints)
     {
+
+        float angleInt = 360 / circlePoints;
+
         for (int i = 0; i < circlePoints; i++)
         {
-            circlePoints++;
+            float distance = Vector3.Distance(transform.position, enemyTransform.position);
 
-            float x = Mathf.Cos(circlePoints) * radius;
-            float y = Mathf.Sin(circlePoints) * radius;
-
-
-
-            Vector3 circlePos = new Vector3(transform.position.x + x, transform.position.y + y);
-            Debug.DrawLine(transform.position, circlePos, Color.green);
-            
+             if (distance < radius)
+             {
+                angles.Add(angleInt * i);
+             }
         }
-        Debug.Log("drawing line");
+
+        for (int index = 1; index < angles.Count; index++)
+        {
+            Vector3 A = transform.position * radius;
+        }
+        
+
+
+        /*for (int i = 0; i < circlePoints; i++)
+        {
+            circlePosition.Add(circlePoints);
+            
+            float angleInRadians = circlePosition[currentPoint] * Mathf.Deg2Rad;
+            
+            float x = Mathf.Cos(angleInRadians);
+            float y = Mathf.Sin(angleInRadians);
+
+
+            Vector3 playerCircle = new Vector3(transform.position.x * x, transform.position.y * y);
+            Vector3 resultant = new Vector3(x, y, 0) * radius;
+            Debug.DrawLine(new Vector3(transform.position.x + x, transform.position.y, 0), new Vector3(transform.position.x, transform.position.y + y, 0), Color.green);
+        }*/
+
+
 
     }
 
