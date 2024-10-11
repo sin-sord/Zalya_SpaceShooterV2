@@ -11,31 +11,39 @@ public class Player : MonoBehaviour
     public GameObject bombPrefab;
     public Transform bombsTransform;
 
+    public GameObject powerUpPrefab;
+
     public float detectionRadius;
 
 
 
     public Vector3 velocity = Vector3.zero;
-   
+
     float speed = 2;
     Vector3 moveDirection = new Vector3(0f, 0f);
-    
+
     public float maxSpeed = 5;
     public float accelerationTime = 3;
 
     private float acceleration;
     // git for prof: 100Vikings
 
-   float timeSpeed = 10f;
-   float movement;
+    float timeSpeed = 10f;
+    float movement;
 
+    // color of the line and the number of points
     Color lineColor = Color.green;
     public int circlePoints;
+
+    // radius and number of power ups:
+    public int powerUpPoints;
+    public float powerUpRadius;
 
     void Start()
     {
         acceleration = maxSpeed / accelerationTime;
         movement = timeSpeed * Time.deltaTime;
+
     }
 
     void Update()
@@ -43,6 +51,15 @@ public class Player : MonoBehaviour
         transform.position += velocity * Time.deltaTime;
         PlayerMovement();
         EnemyRadar(detectionRadius, circlePoints);
+
+
+
+        if (Input.GetKeyDown(KeyCode.P))  //  if the P key is pressed
+        {
+            SpawnPowerups(powerUpRadius, powerUpPoints);  //  spawn the power ups
+
+        }
+
     }
 
     void PlayerMovement()
@@ -91,26 +108,26 @@ public class Player : MonoBehaviour
     public void EnemyRadar(float radius, int circlePoints)
     {
         List<float> listOfPoints = new List<float>();  //  List that holds points
-        float setPoint = 360 / circlePoints;  //  hold the points in the list
+        float setPoint = 360 / circlePoints;  //  a way to calculate the circle for where the power ups will spawn
 
-        for(int index = 0; index <= circlePoints; index++)  //  a loop that has a second loop draw lines to each point, this loop sets the number of points
+        for (int index = 0; index <= circlePoints; index++)  //  a loop that has a second loop draw lines to each point, this loop sets the number of points
         {
             listOfPoints.Add(setPoint * index);
 
-            for(int pointsCount = 1; pointsCount < listOfPoints.Count; pointsCount++)  //  a loop that draws the lines to each point
+            for (int pointsCount = 1; pointsCount < listOfPoints.Count; pointsCount++)  //  a loop that draws the lines to each point
             {
-                Vector3 startLine = transform.position + new Vector3(Mathf.Cos(listOfPoints[pointsCount - 1] * Mathf.Deg2Rad ) * radius,  //  draws a line from the start of a point
-                    Mathf.Sin(listOfPoints[pointsCount - 1] * Mathf.Deg2Rad ) * radius);
+                Vector3 startLine = transform.position + new Vector3(Mathf.Cos(listOfPoints[pointsCount - 1] * Mathf.Deg2Rad) * radius,  //  draws a line from the start of a point
+                    Mathf.Sin(listOfPoints[pointsCount - 1] * Mathf.Deg2Rad) * radius);
 
-                Vector3 endLine = transform.position + new Vector3(Mathf.Cos(listOfPoints[pointsCount] * Mathf.Deg2Rad ) * radius,  //  draws a line to the end of a point
-                    Mathf.Sin(listOfPoints[pointsCount] * Mathf.Deg2Rad ) * radius);
+                Vector3 endLine = transform.position + new Vector3(Mathf.Cos(listOfPoints[pointsCount] * Mathf.Deg2Rad) * radius,  //  draws a line to the end of a point
+                    Mathf.Sin(listOfPoints[pointsCount] * Mathf.Deg2Rad) * radius);
 
                 Debug.DrawLine(startLine, endLine, lineColor);  //  draws the line
             }
 
         }
 
-        if(Vector3.Distance(transform.position, enemyTransform.position) <= radius)  //  if the enemy is within the radius, the line changes to red
+        if (Vector3.Distance(transform.position, enemyTransform.position) <= radius)  //  if the enemy is within the radius, the line changes to red
         {
             lineColor = Color.red;
         }
@@ -118,10 +135,29 @@ public class Player : MonoBehaviour
         {
             lineColor = Color.green;
         }
-
-
-
-
     }
 
+    public void SpawnPowerups(float radius, int numberOfPowerups)
+    {
+        List<float> powerUpList = new List<float>();  //  a list that stores the number of power ups
+        float setPowerUp = 360 / numberOfPowerups;  //  a way to calculate the circle for where the power ups will spawn
+
+        for (int index = 0; index <= numberOfPowerups; index++)  //  a loop that adds to the list
+        {
+            powerUpList.Add(setPowerUp * index);
+
+        }
+        for (int powerUpCount = 1; powerUpCount < powerUpList.Count; powerUpCount++)  //  a loop that  initiates the list by starting at 1 to make the power ups spawn
+        {
+            Vector3 powerUpPosition = transform.position + new Vector3(Mathf.Cos(powerUpList[powerUpCount - 1] * Mathf.Deg2Rad) * radius,  //  sets the position of the power ups
+                Mathf.Sin(powerUpList[powerUpCount - 1] * Mathf.Deg2Rad) * radius);
+
+            Debug.Log("Powerup spawned!");
+
+            Instantiate(powerUpPrefab, powerUpPosition, Quaternion.identity);  //  spawns the power ups at the set position
+
+            //Debug.Log("Powerup spawned!");
+        }
+
+    }
 }
