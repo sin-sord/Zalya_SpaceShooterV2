@@ -11,6 +11,10 @@ public class Player : MonoBehaviour
     public GameObject bombPrefab;
     public Transform bombsTransform;
 
+    public float detectionRadius;
+
+
+
     public Vector3 velocity = Vector3.zero;
    
     float speed = 2;
@@ -32,14 +36,13 @@ public class Player : MonoBehaviour
     {
         acceleration = maxSpeed / accelerationTime;
         movement = timeSpeed * Time.deltaTime;
-
     }
 
     void Update()
     {
         transform.position += velocity * Time.deltaTime;
         PlayerMovement();
-        EnemyRadar(1, circlePoints);
+        EnemyRadar(detectionRadius, circlePoints);
     }
 
     void PlayerMovement()
@@ -48,25 +51,25 @@ public class Player : MonoBehaviour
         //Vector3 moveY = new Vector3(0, 0.1f);  // specifies the movement of the y-axis
         moveDirection = Vector3.zero;
 
-        if (Input.GetKey(KeyCode.LeftArrow))  //  moves the player to the left
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))  //  moves the player to the left
         {
             moveDirection += Vector3.left;
             //transform.position -= moveX;
         }
 
-        if (Input.GetKey(KeyCode.RightArrow))  //  moves the player to the right
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))  //  moves the player to the right
         {
             moveDirection += Vector3.right;
             //transform.position += moveX;
         }
 
-        if (Input.GetKey(KeyCode.UpArrow))  //  moves the player up
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))  //  moves the player up
         {
             moveDirection += Vector3.up;
             //transform.position += moveY;
         }
 
-        if (Input.GetKey(KeyCode.DownArrow))  //  moves the player down
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))  //  moves the player down
         {
             moveDirection += Vector3.down;
             //transform.position -= moveY;
@@ -87,25 +90,27 @@ public class Player : MonoBehaviour
 
     public void EnemyRadar(float radius, int circlePoints)
     {
-        List<float> listOfPoints = new List<float>();
-        float setPoint = 360 / circlePoints;
+        List<float> listOfPoints = new List<float>();  //  List that holds points
+        float setPoint = 360 / circlePoints;  //  hold the points in the list
 
-        for(int index = 0; index <= circlePoints; index++)
+        for(int index = 0; index <= circlePoints; index++)  //  a loop that has a second loop draw lines to each point, this loop sets the number of points
         {
             listOfPoints.Add(setPoint * index);
 
-            for(int pointsCount = 1; pointsCount < listOfPoints.Count; pointsCount++)
+            for(int pointsCount = 1; pointsCount < listOfPoints.Count; pointsCount++)  //  a loop that draws the lines to each point
             {
-                Vector3 startLine = transform.position + new Vector3(Mathf.Cos(listOfPoints[pointsCount - 1] * Mathf.Deg2Rad * radius),Mathf.Sin(listOfPoints[pointsCount - 1] * Mathf.Deg2Rad * radius));
+                Vector3 startLine = transform.position + new Vector3(Mathf.Cos(listOfPoints[pointsCount - 1] * Mathf.Deg2Rad ) * radius,  //  draws a line from the start of a point
+                    Mathf.Sin(listOfPoints[pointsCount - 1] * Mathf.Deg2Rad ) * radius);
 
-                Vector3 endLine = transform.position + new Vector3(Mathf.Cos(listOfPoints[pointsCount] * Mathf.Deg2Rad * radius), Mathf.Sin(listOfPoints[pointsCount] * Mathf.Deg2Rad * radius));
+                Vector3 endLine = transform.position + new Vector3(Mathf.Cos(listOfPoints[pointsCount] * Mathf.Deg2Rad ) * radius,  //  draws a line to the end of a point
+                    Mathf.Sin(listOfPoints[pointsCount] * Mathf.Deg2Rad ) * radius);
 
-                Debug.DrawLine(startLine, endLine, lineColor);
+                Debug.DrawLine(startLine, endLine, lineColor);  //  draws the line
             }
 
         }
 
-        if(Vector3.Distance(transform.position, enemyTransform.position) <= radius)
+        if(Vector3.Distance(transform.position, enemyTransform.position) <= radius)  //  if the enemy is within the radius, the line changes to red
         {
             lineColor = Color.red;
         }
@@ -113,6 +118,10 @@ public class Player : MonoBehaviour
         {
             lineColor = Color.green;
         }
+
+
+
+
     }
 
 }
