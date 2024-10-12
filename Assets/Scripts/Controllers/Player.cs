@@ -110,17 +110,24 @@ public class Player : MonoBehaviour
         List<float> listOfPoints = new List<float>();  //  List that holds points
         float setPoint = 360 / circlePoints;  //  a way to calculate the circle for where the power ups will spawn
 
+
+
+
         for (int index = 0; index <= circlePoints; index++)  //  a loop that has a second loop draw lines to each point, this loop sets the number of points
         {
             listOfPoints.Add(setPoint * index);
 
             for (int pointsCount = 1; pointsCount < listOfPoints.Count; pointsCount++)  //  a loop that draws the lines to each point
             {
-                Vector3 startLine = transform.position + new Vector3(Mathf.Cos(listOfPoints[pointsCount - 1] * Mathf.Deg2Rad) * radius,  //  draws a line from the start of a point
+                Vector3 firstPointsPosition = new Vector3(Mathf.Cos(listOfPoints[pointsCount - 1] * Mathf.Deg2Rad) * radius,  //  draws a line from the start of a point
                     Mathf.Sin(listOfPoints[pointsCount - 1] * Mathf.Deg2Rad) * radius);
-
-                Vector3 endLine = transform.position + new Vector3(Mathf.Cos(listOfPoints[pointsCount] * Mathf.Deg2Rad) * radius,  //  draws a line to the end of a point
+                
+                Vector3 nextPointsPosition = new Vector3(Mathf.Cos(listOfPoints[pointsCount] * Mathf.Deg2Rad) * radius,  //  draws a line to the end of a point
                     Mathf.Sin(listOfPoints[pointsCount] * Mathf.Deg2Rad) * radius);
+
+
+                Vector3 startLine = transform.position + firstPointsPosition;
+                Vector3 endLine = transform.position + nextPointsPosition;
 
                 Debug.DrawLine(startLine, endLine, lineColor);  //  draws the line
             }
@@ -149,8 +156,10 @@ public class Player : MonoBehaviour
         }
         for (int powerUpCount = 1; powerUpCount < powerUpList.Count; powerUpCount++)  //  a loop that  initiates the list by starting at 1 to make the power ups spawn
         {
-            Vector3 powerUpPosition = transform.position + new Vector3(Mathf.Cos(powerUpList[powerUpCount - 1] * Mathf.Deg2Rad) * radius,  //  sets the position of the power ups
+            Vector3 PowerUpLocation = new Vector3(Mathf.Cos(powerUpList[powerUpCount - 1] * Mathf.Deg2Rad) * radius,  //  sets the position of the power ups
                 Mathf.Sin(powerUpList[powerUpCount - 1] * Mathf.Deg2Rad) * radius);
+
+            Vector3 powerUpPosition = transform.position + PowerUpLocation;
 
             Debug.Log("Powerup spawned!");
 
