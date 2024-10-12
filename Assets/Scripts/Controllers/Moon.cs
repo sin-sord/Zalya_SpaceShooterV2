@@ -16,5 +16,8 @@ public class Moon : MonoBehaviour
     public void OrbitalMotion(float radius, float speed, Transform target)
     {
         transform.RotateAround(target.position, Vector3.forward, speed * Time.deltaTime);
+ //     1. rotates the object around the targets position (the planet)
+ //     2. rotates the transforms z axis (Vector3(0,0,1) is just .forward)
+ //     3. and uses the speed * time.deltatime
     }
 }
