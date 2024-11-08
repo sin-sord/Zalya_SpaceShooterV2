@@ -7,61 +7,101 @@ public class EnemyShooter : MonoBehaviour
 {
     public float speed;
     public float hSpeed;
-    public float elapsedPrecent;
-    float totalPrecent = 10;
+  //  public float elapsedPrecent;
+  //  float totalPrecent = 10;
 
-    Vector3 pointA = new Vector3(-20, -9);
-    Vector3 pointB = new Vector3(17, -9);
+    Vector3 startingPosition = new Vector3(-22, -9);
+   // Vector3 pointB = new Vector3(17, -9);
 
     public float timeToPointB;
-    public float pointBTime = 5;
+    public float pointBTime = 3;
 
     public Transform enemySight;
-    public Transform player;
+    //public Transform player;
     public SpriteRenderer enemySightRec;
+
+    public GameObject playerOBJ;
+    Color sightColor;
 
     private void Start()
     {
-        transform.position = pointA;
+        sightColor = Color.green;
+        transform.position = startingPosition;
         enemySightRec.GetComponent<SpriteRenderer>();
+
+
+        playerOBJ.gameObject.CompareTag("Player");
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
         EnemeyMovement();
         EnemyDetection();
+        sightColor.a = 0.1f;
+        enemySightRec.color = sightColor;
 
     }
 
 
     void EnemeyMovement()
     {
-        float interpolation = elapsedPrecent / totalPrecent;
+        //float interpolation = elapsedPrecent / totalPrecent;
 
         timeToPointB += Time.deltaTime;
 
-        if (timeToPointB < pointBTime)
+        if (timeToPointB < 3)
         {
-            transform.position = Vector3.Lerp(transform.position, pointB, interpolation * speed * Time.deltaTime);
+            //transform.position = Vector3.Lerp(transform.position, pointB, interpolation * speed * Time.deltaTime);
+            transform.position = new Vector3(transform.position.x + hSpeed * Time.deltaTime, transform.position.y);
         }
         
-        else if(timeToPointB > pointBTime)
+         if(timeToPointB > 3)
         {
-            transform.position = Vector3.Lerp(transform.position, pointA, interpolation * speed * Time.deltaTime);
-            
+            //transform.position = Vector3.Lerp(transform.position, pointA, interpolation * speed * Time.deltaTime);
+            transform.position = new Vector3(transform.position.x + -hSpeed * Time.deltaTime, transform.position.y);
         }
 
-        if (timeToPointB > 10.0f)
+        if (timeToPointB > 6)
         {
             timeToPointB = 0;
         }
 
+    }
+
+    void EnemyDetection()
+    {
+        if(enemySight.position.x <= playerOBJ.transform.position.x + 0.6  && enemySight.position.x >= playerOBJ.transform.position.x - 0.6)
+        {
+            sightColor = Color.red;
+
+        }
+        else
+        {
+            sightColor = Color.green;
+        }
 
 
 
+    }
 
+    
+    void oldCode()
+    {
+        //original code for movement
+        /*  if(Vector3.Distance(pointA, pointB) > totalPrecent)
+          {
+              Vector3.Lerp(pointB, pointA, interpolation * speed * Time.deltaTime);
+          }
+
+          if (Vector3.Distance(pointB, pointA) > totalPrecent)
+          {
+              Vector3.Lerp(pointA, pointB, interpolation * speed * Time.deltaTime);
+          }*/ 
+        
+        
+        // more code that moves the player smoothly
        /* if (transform.position.x <= -24)
         {
 
@@ -73,35 +113,12 @@ public class EnemyShooter : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x - hSpeed * Time.deltaTime, transform.position.y);
 
-        }*/
-
-    }
-
-    void EnemyDetection()
-    {
-
-/*        if(enemySight == player)
-        {
-            enemySightRec.color = new Color(1,0,0,1,0.5f);
         }
-        else
-        {
-            enemySightRec.color = Color.green;
-        }*/
+       
+        //  a way for the player to find the enemy
+        */
+       // FindObjectOfType<Player>();
+       // player = FindObjectOfType<Player>().transform;
 
-    }
-
-
-    void oldCode()
-    {
-        /*  if(Vector3.Distance(pointA, pointB) > totalPrecent)
-          {
-              Vector3.Lerp(pointB, pointA, interpolation * speed * Time.deltaTime);
-          }
-
-          if (Vector3.Distance(pointB, pointA) > totalPrecent)
-          {
-              Vector3.Lerp(pointA, pointB, interpolation * speed * Time.deltaTime);
-          }*/
     }
 }
