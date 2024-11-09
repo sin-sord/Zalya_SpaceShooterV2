@@ -784,8 +784,8 @@ Transform:
   m_GameObject: {fileID: 680225448}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 10.04, z: 0}
-  m_LocalScale: {x: 0.65, y: 19.88, z: 0}
+  m_LocalPosition: {x: 0, y: 22.41, z: 0}
+  m_LocalScale: {x: 0.65, y: 45, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 892270334}
@@ -3422,7 +3422,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6890330259706833056, guid: abc125f00ae369940b2c5c0275186637, type: 3}
       propertyPath: maxSpeed
-      value: 7
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6890330259706833056, guid: abc125f00ae369940b2c5c0275186637, type: 3}
       propertyPath: warpRatio

@@ -75,7 +75,7 @@ public class EnemyShooter : MonoBehaviour
 
     void EnemyDetection()
     {
-        if(enemySight.position.x <= playerOBJ.transform.position.x + 0.6  && enemySight.position.x >= playerOBJ.transform.position.x - 0.6)
+        if(enemySight.position.x <= playerOBJ.transform.position.x + 0.7  && enemySight.position.x >= playerOBJ.transform.position.x - 0.7)
         {
             sightColor = Color.red;
 
@@ -93,12 +93,6 @@ public class EnemyShooter : MonoBehaviour
         }
 
     }
-
-   void ShootingMissile()
-   {
-
-        
-   }
 
     
     void oldCode()

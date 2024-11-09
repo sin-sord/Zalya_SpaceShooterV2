@@ -15,8 +15,6 @@ public class Player : MonoBehaviour
 
     public float detectionRadius;
 
-
-
     public Vector3 velocity = Vector3.zero;
 
     float speed = 2;
