@@ -5,16 +5,16 @@ using UnityEngine.UIElements;
 
 public class EnemyShooter : MonoBehaviour
 {
-    public float speed;
-    public float hSpeed;
+   // public float speed;
+    public float horizontalSpeed;
   //  public float elapsedPrecent;
   //  float totalPrecent = 10;
 
     Vector3 startingPosition = new Vector3(-22, -9);
    // Vector3 pointB = new Vector3(17, -9);
 
-    public float timeToPointB;
-    public float pointBTime = 3;
+    public float timeToOtherSide;
+    //  public float pointBTime = 3;
 
     public Transform enemySight;
     //public Transform player;
@@ -23,13 +23,15 @@ public class EnemyShooter : MonoBehaviour
     public GameObject playerOBJ;
     Color sightColor;
 
+    public Transform missileSpawn;
+    public GameObject missilePrefab;
+    public float missileDelay = 0.03f;
+
     private void Start()
     {
         sightColor = Color.green;
         transform.position = startingPosition;
         enemySightRec.GetComponent<SpriteRenderer>();
-
-
         playerOBJ.gameObject.CompareTag("Player");
 
     }
@@ -39,6 +41,7 @@ public class EnemyShooter : MonoBehaviour
     {
         EnemeyMovement();
         EnemyDetection();
+        
         sightColor.a = 0.1f;
         enemySightRec.color = sightColor;
 
@@ -49,23 +52,23 @@ public class EnemyShooter : MonoBehaviour
     {
         //float interpolation = elapsedPrecent / totalPrecent;
 
-        timeToPointB += Time.deltaTime;
+        timeToOtherSide += Time.deltaTime;
 
-        if (timeToPointB < 3)
+        if (timeToOtherSide < 3)
         {
             //transform.position = Vector3.Lerp(transform.position, pointB, interpolation * speed * Time.deltaTime);
-            transform.position = new Vector3(transform.position.x + hSpeed * Time.deltaTime, transform.position.y);
+            transform.position = new Vector3(transform.position.x + horizontalSpeed * Time.deltaTime, transform.position.y);
         }
         
-         if(timeToPointB > 3)
+         if(timeToOtherSide > 3)
         {
             //transform.position = Vector3.Lerp(transform.position, pointA, interpolation * speed * Time.deltaTime);
-            transform.position = new Vector3(transform.position.x + -hSpeed * Time.deltaTime, transform.position.y);
+            transform.position = new Vector3(transform.position.x + -horizontalSpeed * Time.deltaTime, transform.position.y);
         }
 
-        if (timeToPointB > 6)
+        if (timeToOtherSide >= 6)
         {
-            timeToPointB = 0;
+            timeToOtherSide = 0;
         }
 
     }
@@ -76,15 +79,26 @@ public class EnemyShooter : MonoBehaviour
         {
             sightColor = Color.red;
 
+            missileDelay += Time.deltaTime;
+            if(missileDelay > 0.1)
+            {
+                missileDelay = 0.02f;
+                Instantiate(missilePrefab, missileSpawn.position, transform.rotation);
+            }
+            
         }
         else
         {
             sightColor = Color.green;
         }
 
-
-
     }
+
+   void ShootingMissile()
+   {
+
+        
+   }
 
     
     void oldCode()
