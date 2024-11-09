@@ -37,10 +37,15 @@ public class Player : MonoBehaviour
     public int powerUpPoints;
     public float powerUpRadius;
 
+    public Transform playerSpawn;
+
     void Start()
     {
         acceleration = maxSpeed / accelerationTime;
         movement = timeSpeed * Time.deltaTime;
+        transform.position = playerSpawn.transform.position;
+
+
 
     }
 
@@ -119,7 +124,7 @@ public class Player : MonoBehaviour
             {
                 Vector3 firstPointsPosition = new Vector3(Mathf.Cos(listOfPoints[pointsCount - 1] * Mathf.Deg2Rad) * radius,  //  draws a line from the start of a point
                     Mathf.Sin(listOfPoints[pointsCount - 1] * Mathf.Deg2Rad) * radius);
-                
+
                 Vector3 nextPointsPosition = new Vector3(Mathf.Cos(listOfPoints[pointsCount] * Mathf.Deg2Rad) * radius,  //  draws a line to the end of a point
                     Mathf.Sin(listOfPoints[pointsCount] * Mathf.Deg2Rad) * radius);
 

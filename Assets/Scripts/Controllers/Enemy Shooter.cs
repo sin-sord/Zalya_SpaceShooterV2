@@ -27,6 +27,9 @@ public class EnemyShooter : MonoBehaviour
     public GameObject missilePrefab;
     public float missileDelay = 0.03f;
 
+    public Transform playerSpawn;
+    public Vector3 playerHitRadius;
+
     private void Start()
     {
         sightColor = Color.green;
@@ -84,6 +87,7 @@ public class EnemyShooter : MonoBehaviour
             {
                 missileDelay = 0.02f;
                 Instantiate(missilePrefab, missileSpawn.position, transform.rotation);
+
             }
             
         }

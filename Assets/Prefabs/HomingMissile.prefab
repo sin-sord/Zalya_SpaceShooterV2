@@ -46,6 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missileSpeed: 7
+  missileMaxSpeed: 6
+  accelerationTime: 1
+  playerOBJ: {fileID: 0}
 --- !u!1 &1819074805867038
 GameObject:
   m_ObjectHideFlags: 0
